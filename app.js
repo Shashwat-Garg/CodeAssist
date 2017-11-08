@@ -7,8 +7,8 @@ var fs=require('fs');
 var con=mysql.createConnection({
 	host:"localhost",
 	user:"root",
-	password:"palakgupta889",
-	database:"adp"
+	password:"shshwt.grg",
+	database:"Test"
 });
 con.connect(function(err){
 	if(err) throw err;
@@ -74,8 +74,12 @@ io.on('connection',function(socket){
 	console.log('Connection Made by '+NAME);
 	var session='UPDATE User SET SessionID=? where Name=?';
 	con.query(session,[socket.id,NAME]);
-	if(socket.Name!='')
+	if(socket.name!='')
+	{
 		users[socket.name]=socket;
+		var text=fs.readFileSync(__dirname+'\\codes\\'+socket.name+'.txt','utf8');
+		socket.emit("takefilename",text);
+	}
 	var sql='UPDATE User SET Online=1 where SessionID=?';
 	var sql2='UPDATE User SET Online=0 where SessionID=?';
 	// var online_users="select Name from User where Online=1";

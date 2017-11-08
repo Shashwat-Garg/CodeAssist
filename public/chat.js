@@ -1,4 +1,4 @@
-var socket=io.connect('10.8.17.80:3000');
+var socket=io.connect('localhost:3000');
 var Message=document.getElementById('Message');
 var Send_button=document.getElementById('send');
 var output=document.getElementById('Output');
