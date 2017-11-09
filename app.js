@@ -94,7 +94,90 @@ io.on('connection',function(socket){
 	// });
 	socket.on('chat',function(data){
 		// console.log(typeof(data.to));
+		var text=data.Message;
+		var d = new Date();
+		var str='\n['+data.UserName+':-'+d.getDate()+'-'+d.getMonth()+'-'+d.getFullYear()+","+d.getHours()+':'+d.getMinutes()+']'+text+'*--x--*';
+		console.log(str);
+		if(fs.existsSync(__dirname+'\\chats\\'+data.to+'+'+data.UserName+'.txt')){
+			fs.appendFileSync(__dirname+'\\chats\\'+data.to+'+'+data.UserName+'.txt',str);
+		}
+		else if(fs.existsSync(__dirname+'\\chats\\'+data.UserName+'+'+data.to+'.txt')){
+			fs.appendFileSync(__dirname+'\\chats\\'+data.UserName+'+'+data.to+'.txt',str);
+		}
+		else{
+			fs.writeFileSync(__dirname+'\\chats\\'+data.to+'+'+data.UserName+'.txt',str);
+		}
 		users[data.to].emit('chat',data);
+	});
+	socket.on('myChatInBox',function(data){
+		console.log('Getting mychat...');
+		console.log('To:'+data.to+'\nFrom:'+data.UserName);
+		try{
+			console.log('1st try');
+			var text=fs.readFileSync(__dirname+'\\chats\\'+data.to+'+'+data.UserName+'.txt','utf8');
+			var chats=text.split("*--x--*");
+			chats.forEach(function(item,index){
+				var t=item.split(":-");
+				var s=t[0];
+				s=s.substring(2);
+				if(s===data.UserName){
+					var x=item.indexOf(']');
+					s=item.substring(x+1);
+					var dat={
+						to:data.to,
+						Message:s,
+						UserName:data.UserName
+					};
+					socket.emit('myChatInBox',dat);
+				}
+				else if(s===data.to){
+					var x=item.indexOf(']');
+					s=item.substring(x+1);
+					var dat={
+						to:data.UserName,
+						Message:s,
+						UserName:data.to
+					};
+					socket.emit('chat',dat);
+				}
+			});
+		}
+		catch(err){
+			console.log(err);
+			try{
+				console.log('2nd try');
+				var text=fs.readFileSync(__dirname+'\\chats\\'+data.UserName+'+'+data.to+'.txt','utf8');
+				var chats=text.split("*--x--*");
+				chats.forEach(function(item,index){
+					var t=item.split(":-");
+					var s=t[0];
+					s=s.substring(2);
+					if(s===data.UserName){
+						var x=item.indexOf(']');
+						s=item.substring(x+1);
+						var dat={
+							to:data.to,
+							Message:s,
+							UserName:data.UserName
+						};
+						socket.emit('myChatInBox',dat);
+					}
+					else if(s===data.to){
+						var x=item.indexOf(']');
+						s=item.substring(x+1);
+						var dat={
+							to:data.UserName,
+							Message:s,
+							UserName:data.to
+						};
+						socket.emit('chat',dat);
+					}
+				});
+			}
+			catch(err){
+				console.log(err);
+			}
+		}
 	});
 	socket.on('typing',function(data){
 		socket.broadcast.emit('typing',data);

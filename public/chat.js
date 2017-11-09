@@ -82,6 +82,8 @@ function create_chatbox(Name)
 		New_Message.id=Name+"3";
 		SEND.id=Name+"4";
 		SEND.innerHTML="Send";
+		var oldChatData={to:Name,UserName:user.innerHTML};
+		socket.emit('myChatInBox',oldChatData);
 		Chat_bottom.appendChild(SEND);
 		SEND.onclick=function(){
 			var string=this.id;
@@ -98,7 +100,8 @@ function create_chatbox(Name)
 				SEND.click();
 		});
 		New_Chatbox.style.float="left";
-		Chatting.appendChild(New_Chatbox);}
+		Chatting.appendChild(New_Chatbox);
+	}
 		// New_Message.style.position="relative";
 }
 socket.on('Online',function(data){
@@ -112,8 +115,12 @@ socket.on('Online',function(data){
 
 //Listen
 socket.on('chat',function(data){
+	console.log(data);
 	type.innerHTML="";
 	var Apple=data.UserName;
 	create_chatbox(Apple);
 	function1(data,'her',Apple);
+});
+socket.on('myChatInBox',function(data){
+	function1(data,"my",data.to);
 });
