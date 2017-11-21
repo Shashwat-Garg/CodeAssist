@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+[Shashwat:-20-10-2017,12:18]Hi sir !*--x--*
+[Pratyush:-20-10-2017,12:18]Hey dude !*--x--*
+[Shashwat:-20-10-2017,12:19]Aur suna kya haal hai ?*--x--*
+=======
 
 [Shashwat:-8-10-2017,22:59]Yo!*--x--*
 [Pratyush:-8-10-2017,22:59]Ha Sir ?*--x--*
@@ -10,3 +15,4 @@
 [Shashwat:-9-10-2017,0:16]Mast bhai ;)*--x--*
 [Pratyush:-9-10-2017,0:16]Messaging ban gayi ?*--x--*
 [Shashwat:-9-10-2017,0:16]Bas khatam hone waali hai (y)*--x--*
+>>>>>>> 752fd75292a058c4dca06a3e3542b858f2b5ca63
